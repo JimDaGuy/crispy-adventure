@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu, Segment, Button } from 'semantic-ui-react';
-// import style from './Menu.scss';
+import style from './Menu.module.scss';
 
 class App extends React.Component {
   state = { activeItem: 'home' };
@@ -17,8 +17,8 @@ class App extends React.Component {
     const { activeItem } = this.state;
 
     return (
-      <Segment inverted>
-        <Menu inverted secondary>
+      <Segment className={style.segment}>
+        <Menu className={style.menu}>
           <Menu.Item name="home" active={activeItem === 'home'} onClick={this.handleItemClick} />
           <Menu.Item
             name="messages"
