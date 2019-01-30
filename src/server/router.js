@@ -16,6 +16,9 @@ const router = (app) => {
     mid.requiresLogout,
     controllers.Account.changePassword
   );
+
+  // Security
+  app.get('/getToken', mid.requiresSecure, controllers.Helper.getToken);
 };
 
 module.exports = router;
