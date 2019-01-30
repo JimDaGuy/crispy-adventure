@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -72,6 +73,8 @@ if (process.env.NODE_ENV !== 'testing') {
 }
 
 router(app);
+app.use(express.static(path.join(__dirname, '/../../public')));
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, '/../../public/index.html')));
 
 app.listen(port, (err) => {
   if (err) throw err;
