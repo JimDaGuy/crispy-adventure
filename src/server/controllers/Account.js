@@ -4,7 +4,7 @@ const { Account } = models;
 
 const logout = (req, res) => {
   req.session.destroy();
-  res.redirect('/');
+  res.redirect('/#/');
 };
 
 const login = (request, response) => {
@@ -25,7 +25,7 @@ const login = (request, response) => {
 
     req.session.account = Account.AccountModel.toAPI(account);
 
-    return res.json({ redirect: '/app' });
+    return res.json({ redirect: '/#/app' });
   });
 };
 
@@ -70,7 +70,7 @@ const signup = (request, response) => {
       }
 
       req.session.account = Account.AccountModel.toAPI(newAccount);
-      return res.json({ redirect: '/app' });
+      return res.json({ redirect: '/#/app' });
     });
 
     savePromise.catch((err) => {

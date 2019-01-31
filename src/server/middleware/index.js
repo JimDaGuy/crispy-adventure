@@ -1,7 +1,7 @@
 const requiresLogin = (req, res, next) => {
   if (!req.session.account) {
     console.dir('Not logged in');
-    return res.redirect('/');
+    return res.redirect('/#/');
   }
   return next();
 };
@@ -9,7 +9,7 @@ const requiresLogin = (req, res, next) => {
 const requiresLogout = (req, res, next) => {
   if (req.session.account) {
     console.dir('Logged in');
-    return res.redirect('/app');
+    return res.redirect('/#/app');
   }
 
   return next();

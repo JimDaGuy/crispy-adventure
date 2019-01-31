@@ -45,6 +45,7 @@ const styles = theme => ({
 
 class Landing extends React.Component {
   static handleSignUpSubmit(e) {
+    e.stopPropogation();
     e.preventDefault();
 
     const form = $('#signUpForm');

@@ -39,8 +39,6 @@ const router = require('./router.js');
 
 const app = express();
 
-app.use(express.static('dist'));
-
 app.disable('x-powered-by');
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -62,16 +60,14 @@ app.use(
 );
 app.use(cookieParser());
 
-if (process.env.NODE_ENV !== 'testing') {
-  app.use(csrf());
-  app.use((err, req, res, next) => {
-    if (err.code !== 'EBADCSRFTOKEN') return next(err);
+app.use(csrf());
+app.use((err, req, res, next) => {
+  if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
-    console.dir(req.body._csrf); // eslint-disable-line
-    console.log('Missing CSRF token');
-    return false;
-  });
-}
+  console.dir(req.body._csrf); // eslint-disable-line
+  console.log('Missing CSRF token');
+  return false;
+});
 
 router(app);
 app.use(express.static(path.join(__dirname, '/../../public')));
