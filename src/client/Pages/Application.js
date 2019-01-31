@@ -1,5 +1,5 @@
 import React from 'react';
-import Menu from '../Components/Menu';
+import LandingAppBar from '../Components/LandingAppBar';
 import style from './Application.module.scss';
 
 class App extends React.Component {
@@ -8,7 +8,7 @@ class App extends React.Component {
   render() {
     return (
       <div className={style.container}>
-        <Menu />
+        <LandingAppBar />
       </div>
     );
   }

@@ -37,6 +37,8 @@ const signup = (request, response) => {
   req.body.pass = `${req.body.pass}`;
   req.body.pass2 = `${req.body.pass2}`;
 
+  console.dir(`Got here. Also: ${req.body.username}`);
+
   if (!req.body.username || !req.body.pass || !req.body.pass2) {
     return res.status(400).json({ error: 'All fields are required' });
   }

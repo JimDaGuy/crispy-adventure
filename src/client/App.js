@@ -4,10 +4,11 @@ import Landing from './Pages/Landing';
 import Login from './Pages/Login';
 import Application from './Pages/Application';
 import NotFound from './Pages/NotFound';
-import 'semantic-ui-css/semantic.min.css';
+import './App.scss';
 
 class App extends React.Component {
   // state = { username: null };
+  state = { csrf: null };
 
   fakeAuth = {
     isAuthenticated: false,
@@ -27,14 +28,20 @@ class App extends React.Component {
       .then(res => res.json())
       .then(user => this.setState({ username: user.username }));
     */
+
+    fetch('/api/getToken')
+      .then(res => res.json())
+      .then(response => this.setState({ csrf: response.csrfToken }));
   }
 
   render() {
     // const { username } = this.state;
+    const { csrf } = this.state;
+
     return (
       <Router>
         <Switch>
-          <Route path="/" exact component={Landing} />
+          <Route path="/" exact render={props => <Landing {...props} csrf={csrf} />} />
           <Route path="/login" component={Login} />
           <Route path="/app" component={Application} />
           <Route component={NotFound} />

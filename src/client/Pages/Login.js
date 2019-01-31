@@ -1,11 +1,16 @@
 import React from 'react';
-import Menu from '../Components/Menu';
+import LandingAppBar from '../Components/LandingAppBar';
+import style from './Login.module.scss';
 
 class Login extends React.Component {
   componentDidMount() {}
 
   render() {
-    return <Menu />;
+    return (
+      <div className={style.container}>
+        <LandingAppBar />
+      </div>
+    );
   }
 }
 

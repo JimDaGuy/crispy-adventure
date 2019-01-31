@@ -1,1 +1,12 @@
 @import "../theme";
+
+.container {
+  background-color: $primary;
+  width: 100vw;
+  height: 100vh;
+}
+
+.bannerTextContainer {
+  background-color: red;
+  height: 400px;
+}

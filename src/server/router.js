@@ -18,7 +18,7 @@ const router = (app) => {
   );
 
   // Security
-  app.get('/getToken', mid.requiresSecure, controllers.Helper.getToken);
+  app.get('/api/getToken', mid.requiresSecure, controllers.Helper.getToken);
 };
 
 module.exports = router;
