@@ -55,7 +55,13 @@ const LandingAppBar = (props) => {
             </Button>
           )}
           {signupButton && (
-            <Button variant="outlined" color="inherit" className={classes.signUpButton}>
+            <Button
+              variant="outlined"
+              color="inherit"
+              className={classes.signUpButton}
+              component={Link}
+              to="/signup"
+            >
               Sign Up
             </Button>
           )}

@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import Landing from './Pages/Landing';
 import Login from './Pages/Login';
+import Signup from './Pages/Signup';
 import Application from './Pages/Application';
 import NotFound from './Pages/NotFound';
 import './App.scss';
@@ -63,6 +64,15 @@ class App extends React.Component {
               <Redirect to="/app" />
             ) : (
               <Login {...props} csrf={csrf} updateLogin={this.updateLogin} />
+            ))
+            }
+          />
+          <Route
+            path="/signup"
+            render={props => (loggedIn ? (
+              <Redirect to="/app" />
+            ) : (
+              <Signup {...props} csrf={csrf} updateLogin={this.updateLogin} />
             ))
             }
           />
