@@ -1,17 +1,29 @@
 import React from 'react';
-import LandingAppBar from '../Components/LandingAppBar';
+import PropTypes from 'prop-types';
+import MainAppBar from '../Components/MainAppBar';
 import style from './Application.module.scss';
 
-class App extends React.Component {
+class Application extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
   componentDidMount() {}
 
   render() {
+    const { updateLogin } = this.props;
     return (
       <div className={style.container}>
-        <LandingAppBar />
+        <MainAppBar updateLogin={updateLogin} />
       </div>
     );
   }
 }
 
-export default App;
+Application.propTypes = {
+  updateLogin: PropTypes.func.isRequired
+};
+
+export default Application;

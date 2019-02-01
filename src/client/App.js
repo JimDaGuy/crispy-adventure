@@ -9,11 +9,15 @@ import NotFound from './Pages/NotFound';
 import './App.scss';
 
 class App extends React.Component {
-  state = { csrf: null, loggedIn: false };
+  constructor(props) {
+    super(props);
+
+    this.state = { csrf: null, loggedIn: false };
+
+    this.updateLogin = this.updateLogin.bind(this);
+  }
 
   componentDidMount() {
-    fetch('/api/logout');
-
     fetch('/api/checkLogin')
       .then(res => res.json())
       .then(response => this.setState({ loggedIn: response.loggedIn }));
@@ -21,6 +25,15 @@ class App extends React.Component {
     fetch('/api/getToken')
       .then(res => res.json())
       .then(response => this.setState({ csrf: response.csrfToken }));
+  }
+
+  updateLogin(status, redirect) {
+    fetch('/api/getToken')
+      .then(res => res.json())
+      .then((response) => {
+        this.setState({ csrf: response.csrfToken, loggedIn: status });
+        window.location = redirect;
+      });
   }
 
   render() {
@@ -32,15 +45,34 @@ class App extends React.Component {
           <Route
             path="/"
             exact
-            render={props => <Landing {...props} csrf={csrf} loggedIn={loggedIn} />}
+            render={props => (loggedIn ? (
+              <Redirect to="/app" />
+            ) : (
+              <Landing
+                {...props}
+                csrf={csrf}
+                loggedIn={loggedIn}
+                updateLogin={this.updateLogin}
+              />
+            ))
+            }
           />
           <Route
             path="/login"
-            render={props => (loggedIn ? <Redirect to="/app" /> : <Login {...props} csrf={csrf} />)}
+            render={props => (loggedIn ? (
+              <Redirect to="/app" />
+            ) : (
+              <Login {...props} csrf={csrf} updateLogin={this.updateLogin} />
+            ))
+            }
           />
           <Route
             path="/app"
-            render={props => (!loggedIn ? <Redirect to="/" /> : <Application {...props} csrf={csrf} />)
+            render={props => (!loggedIn ? (
+              <Redirect to="/" />
+            ) : (
+              <Application {...props} csrf={csrf} updateLogin={this.updateLogin} />
+            ))
             }
           />
           <Route render={props => <NotFound {...props} csrf={csrf} />} />

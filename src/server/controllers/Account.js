@@ -63,16 +63,6 @@ const signup = (request, response) => {
     const savePromise = newAccount.save();
 
     savePromise.then(() => {
-      if (process.env.NODE_ENV === 'testing') {
-        const params = {
-          username: req.body.username,
-          pass: req.body.pass,
-          pass2: req.body.pass2
-        };
-
-        return res.json(params);
-      }
-
       req.session.account = Account.AccountModel.toAPI(newAccount);
       return res.json({ redirect: '/#/app' });
     });

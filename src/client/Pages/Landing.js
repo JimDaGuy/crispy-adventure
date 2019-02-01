@@ -63,6 +63,8 @@ class Landing extends React.Component {
     e.preventDefault();
     e.stopPropagation();
 
+    const { updateLogin } = this.props;
+
     const form = $('#signUpForm');
     const type = 'POST';
     const url = form.attr('action');
@@ -75,9 +77,10 @@ class Landing extends React.Component {
       data,
       dataType: 'json',
       success: (response) => {
-        window.location = response.redirect;
+        updateLogin(true, response.redirect);
       },
       error: (error) => {
+        console.dir(error);
         const errorMessage = error.responseJSON.error;
         this.setState({ error: errorMessage });
       }
@@ -166,7 +169,8 @@ Landing.defaultProps = {
 
 Landing.propTypes = {
   classes: PropTypes.shape().isRequired,
-  csrf: PropTypes.string
+  csrf: PropTypes.string,
+  updateLogin: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Landing);

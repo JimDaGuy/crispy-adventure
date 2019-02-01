@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 // import style from './LandingAppBar.module.scss';
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     flexGrow: 1
   },
@@ -24,15 +24,12 @@ const styles = theme => ({
   },
   signUpButton: {
     marginLeft: 5,
-    marginRight: 5,
-    [theme.breakpoints.down('xs')]: {
-      display: 'none'
-    }
+    marginRight: 5
   }
 });
 
 const LandingAppBar = (props) => {
-  const { classes } = props;
+  const { classes, loginButton, signupButton } = props;
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -46,26 +43,37 @@ const LandingAppBar = (props) => {
           >
             PaintGauge
           </Typography>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            component={Link}
-            to="/login"
-          >
-            Log In
-          </Button>
-          <Button variant="outlined" color="inherit" className={classes.signUpButton}>
-            Sign Up
-          </Button>
+          {loginButton && (
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+              component={Link}
+              to="/login"
+            >
+              Log In
+            </Button>
+          )}
+          {signupButton && (
+            <Button variant="outlined" color="inherit" className={classes.signUpButton}>
+              Sign Up
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </div>
   );
 };
 
+LandingAppBar.defaultProps = {
+  loginButton: true,
+  signupButton: true
+};
+
 LandingAppBar.propTypes = {
-  classes: PropTypes.shape().isRequired
+  classes: PropTypes.shape().isRequired,
+  loginButton: PropTypes.bool,
+  signupButton: PropTypes.bool
 };
 
 export default withStyles(styles)(LandingAppBar);
