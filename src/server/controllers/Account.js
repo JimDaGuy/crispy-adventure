@@ -2,6 +2,12 @@ const models = require('../models');
 
 const { Account } = models;
 
+const checkLogin = (req, res) => {
+  const loggedIn = req.session.account !== undefined;
+
+  res.json({ loggedIn });
+};
+
 const logout = (req, res) => {
   req.session.destroy();
   res.redirect('/#/');
@@ -36,8 +42,6 @@ const signup = (request, response) => {
   req.body.username = `${req.body.username}`;
   req.body.pass = `${req.body.pass}`;
   req.body.pass2 = `${req.body.pass2}`;
-
-  console.dir(`Got here. Also: ${req.body.username}`);
 
   if (!req.body.username || !req.body.pass || !req.body.pass2) {
     return res.status(400).json({ error: 'All fields are required' });
@@ -128,6 +132,7 @@ const changePassword = (request, response) => {
 };
 
 module.exports = {
+  checkLogin,
   login,
   logout,
   signup,

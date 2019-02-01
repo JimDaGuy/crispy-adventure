@@ -64,7 +64,6 @@ app.use(csrf());
 app.use((err, req, res, next) => {
   if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
-  console.dir(req.body._csrf); // eslint-disable-line
   console.log('Missing CSRF token');
   return false;
 });

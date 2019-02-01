@@ -7,6 +7,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 import $ from 'jquery';
 import LandingAppBar from '../Components/LandingAppBar';
 // import style from './Landing.module.scss';
@@ -20,7 +21,7 @@ const styles = theme => ({
   },
   bannerContainer: {
     backgroundColor: theme.palette.primary.dark,
-    height: '80vh',
+    height: '90vh',
     padding: '20px 0'
   },
   bannerTextContainer: {
@@ -39,20 +40,33 @@ const styles = theme => ({
     width: '80%',
     padding: '20px',
     borderRadius: '15px',
+    margin: '0 auto',
     backgroundColor: theme.palette.secondary.main
+  },
+  error: {
+    backGroundColor: theme.palette.secondary.light
   }
 });
 
 class Landing extends React.Component {
-  static handleSignUpSubmit(e) {
-    e.stopPropogation();
+  constructor(props) {
+    super(props);
+
+    this.state = { error: '' };
+
+    this.handleSignUpSubmit = this.handleSignUpSubmit.bind(this);
+  }
+
+  componentDidMount() {}
+
+  handleSignUpSubmit(e) {
     e.preventDefault();
+    e.stopPropagation();
 
     const form = $('#signUpForm');
     const type = 'POST';
     const url = form.attr('action');
     const data = form.serialize();
-    // const success = redirect;
 
     $.ajax({
       cache: false,
@@ -63,23 +77,16 @@ class Landing extends React.Component {
       success: (response) => {
         window.location = response.redirect;
       },
-      error: () => {}
+      error: (error) => {
+        const errorMessage = error.responseJSON.error;
+        this.setState({ error: errorMessage });
+      }
     });
+    return false;
   }
-
-  static stopPropagation(e) {
-    e.stopPropagation();
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  }
-
-  componentDidMount() {}
 
   render() {
+    const { error } = this.state;
     const { classes, csrf } = this.props;
 
     return (
@@ -140,6 +147,11 @@ class Landing extends React.Component {
               >
                 Create Account
               </Button>
+              {error !== '' && (
+                <Paper className={classes.error} color="secondary" elevation={1}>
+                  <Typography component="span">{error}</Typography>
+                </Paper>
+              )}
             </form>
           </Grid>
         </Grid>

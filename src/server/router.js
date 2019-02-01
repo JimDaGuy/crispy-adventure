@@ -17,6 +17,8 @@ const router = (app) => {
     controllers.Account.changePassword
   );
 
+  app.get('/api/checkLogin', controllers.Account.checkLogin);
+
   // Security
   app.get('/api/getToken', mid.requiresSecure, controllers.Helper.getToken);
 };
