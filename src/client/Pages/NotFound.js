@@ -1,17 +1,93 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import LandingAppBar from '../Components/LandingAppBar';
-import style from './NotFound.module.scss';
+// import style from './NotFound.module.scss';
+
+const styles = theme => ({
+  grow: {
+    flexGrow: 1
+  },
+  container: {
+    backgroundColor: theme.palette.primary.light
+  },
+  bannerContainer: {
+    backgroundColor: theme.palette.primary.dark,
+    height: '90vh',
+    padding: '20px 0'
+  },
+  bannerTextContainer: {
+    height: '100px',
+    width: '80%',
+    margin: '0 10%'
+  },
+  h1: {
+    margin: '20px 0',
+    color: theme.palette.secondary.contrastText
+  },
+  description: {
+    color: theme.palette.secondary.contrastText
+  },
+  return: {
+    color: theme.palette.secondary.light,
+    textDecoration: 'none'
+  }
+});
 
 class NotFound extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
   componentDidMount() {}
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <div className={style.container}>
-        <LandingAppBar />
+      <div className={`${classes.grow} ${classes.container}`}>
+        <LandingAppBar signupButton={false} loginButton={false} />
+        <Grid container spacing={0} color="inherit" className={classes.bannerContainer}>
+          <Grid item xs={12}>
+            <div className={classes.bannerTextContainer}>
+              <Typography
+                component="h1"
+                variant="h4"
+                color="inherit"
+                className={`${classes.grow} ${classes.h1}`}
+              >
+                Page Not Found
+              </Typography>
+              <Typography
+                component="h2"
+                variant="h6"
+                color="inherit"
+                className={`${classes.grow} ${classes.description}`}
+              >
+                The page you were looking for at
+                {` ${window.location} `}
+                doesnt seem to exist. Want to
+                {' '}
+                <Link to="/" className={classes.return}>
+                  return home
+                </Link>
+                ?
+              </Typography>
+            </div>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 }
 
-export default NotFound;
+NotFound.propTypes = {
+  classes: PropTypes.shape().isRequired
+};
+
+export default withStyles(styles)(NotFound);
