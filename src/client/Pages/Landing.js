@@ -20,31 +20,34 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.light
   },
   bannerContainer: {
-    backgroundColor: theme.palette.primary.dark,
-    height: '90vh',
+    backgroundColor: theme.palette.grey['100'],
+    minHeight: '90vh',
     padding: '20px 0'
   },
   bannerTextContainer: {
-    height: '100px',
     width: '80%',
-    margin: '0 10%'
+    overflow: 'auto',
+    margin: '0 10% 25px 10%'
   },
   h1: {
     margin: '20px 0',
-    color: theme.palette.secondary.contrastText
+    color: theme.palette.common.black
   },
   description: {
-    color: theme.palette.secondary.contrastText
+    color: theme.palette.common.black,
+    marginBottom: '25px'
   },
   form: {
     width: '80%',
     padding: '20px',
     borderRadius: '15px',
     margin: '0 auto',
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.common.white,
   },
   error: {
-    backGroundColor: theme.palette.secondary.light
+    marginTop: '10px',
+    backgroundColor: theme.palette.error.main,
+    textAlign: 'center'
   }
 });
 
@@ -95,25 +98,25 @@ class Landing extends React.Component {
     return (
       <div className={`${classes.grow} ${classes.container}`}>
         <LandingAppBar />
-        <Grid container spacing={0} color="inherit" className={classes.bannerContainer}>
+        <Grid container spacing={0} className={classes.bannerContainer}>
           <Grid item xs={12} sm={7}>
             <div className={classes.bannerTextContainer}>
               <Typography
                 component="h1"
                 variant="h4"
-                color="inherit"
                 className={`${classes.grow} ${classes.h1}`}
               >
                 Rate Paintings
               </Typography>
+              <hr />
               <Typography
                 component="h2"
                 variant="h6"
-                color="inherit"
                 className={`${classes.grow} ${classes.description}`}
               >
                 PaintGauge grabs paintings from the Harvard Art Museum API for you to view and rate.
               </Typography>
+              <hr />
             </div>
           </Grid>
           <Grid item xs={12} sm={5}>
@@ -128,6 +131,7 @@ class Landing extends React.Component {
               <Typography component="h1" variant="h5" color="textPrimary">
                 Sign up to start rating
               </Typography>
+              <hr />
               <FormControl margin="normal" color="inherit" required fullWidth>
                 <InputLabel htmlFor="username">Username</InputLabel>
                 <Input id="username" name="username" autoComplete="username" autoFocus />

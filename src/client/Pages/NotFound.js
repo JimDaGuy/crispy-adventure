@@ -15,7 +15,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.light
   },
   bannerContainer: {
-    backgroundColor: theme.palette.primary.dark,
+    backgroundColor: theme.palette.grey['100'],
     height: '90vh',
     padding: '20px 0'
   },
@@ -30,6 +30,9 @@ const styles = theme => ({
   },
   description: {
     color: theme.palette.secondary.contrastText
+  },
+  link: {
+    color: theme.palette.secondary.light
   },
   return: {
     color: theme.palette.secondary.light,
@@ -70,7 +73,7 @@ class NotFound extends React.Component {
                 className={`${classes.grow} ${classes.description}`}
               >
                 The page you were looking for at
-                {` ${window.location} `}
+                <span className={classes.link}>{` ${window.location} `}</span>
                 doesnt seem to exist. Want to
                 {' '}
                 <Link to="/" className={classes.return}>

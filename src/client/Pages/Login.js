@@ -20,7 +20,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.light
   },
   bannerContainer: {
-    backgroundColor: theme.palette.primary.dark,
+    backgroundColor: theme.palette.grey['100'],
     height: '90vh',
     padding: '20px 0'
   },
@@ -41,10 +41,12 @@ const styles = theme => ({
     padding: '20px',
     borderRadius: '15px',
     margin: '0 auto',
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.common.white
   },
   error: {
-    backGroundColor: theme.palette.secondary.light
+    marginTop: '10px',
+    backgroundColor: theme.palette.error.main,
+    textAlign: 'center'
   }
 });
 
@@ -108,6 +110,7 @@ class Login extends React.Component {
               <Typography component="h1" variant="h5" color="textPrimary">
                 Sign In
               </Typography>
+              <hr />
               <FormControl margin="normal" color="inherit" required fullWidth>
                 <InputLabel htmlFor="username">Username</InputLabel>
                 <Input id="username" name="username" autoComplete="username" autoFocus />
