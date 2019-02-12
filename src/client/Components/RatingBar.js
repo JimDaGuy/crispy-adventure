@@ -17,7 +17,8 @@ const styles = theme => ({
   },
   sliderDiv: {
     height: '70px',
-    padding: '0 25px'
+    padding: '0 25px',
+    overflow: 'hidden'
   },
   ratingLabel: {
     margin: '5px 0 20px 0',

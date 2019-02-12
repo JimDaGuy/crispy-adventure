@@ -27,19 +27,34 @@ class Application extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      dated: null,
+      id: null,
+      imageURL: null,
+      title: null
+    };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    fetch('/api/getRandomPainting')
+      .then(res => res.json())
+      .then(response => this.setState({
+        dated: response.dated,
+        id: response.id,
+        imageURL: response.primaryimageurl,
+        title: response.title
+      }));
+  }
 
   render() {
-    const { classes, updateLogin } = this.props;
+    const { classes, updateLogin, csrf } = this.props;
+    const { id, imageURL, title } = this.state;
 
     return (
       <div className={`${classes.grow} ${classes.container}`}>
         <MainAppBar updateLogin={updateLogin} />
-        <ImageContainer />
-        <RatingBar />
+        <ImageContainer title={title} imageURL={imageURL} loading={false} />
+        <RatingBar id={id} csrf={csrf} />
       </div>
     );
   }

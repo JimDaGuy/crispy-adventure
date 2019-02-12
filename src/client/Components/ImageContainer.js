@@ -77,7 +77,7 @@ class ImageContainer extends React.Component {
             <CircularProgress className={classes.progress} color="secondary" />
           </div>
         ) : null}
-        {imageURL == null ? (
+        {imageURL === null ? (
           <img src={defaultImage} alt={imageAlt} className={`${classes.image}`} />
         ) : (
           <img src={imageURL} alt={imageAlt} className={`${classes.image}`} />
