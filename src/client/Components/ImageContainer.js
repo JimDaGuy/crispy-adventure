@@ -8,6 +8,12 @@ import defaultImage from '../Assets/profile.png';
 const styles = theme => ({
   container: {
     backgroundColor: '#000000',
+    height: '250px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    justifyItems: 'center',
+    alignItems: 'center'
   },
   overlay: {
     backgroundColor: '#000000',
@@ -26,15 +32,24 @@ const styles = theme => ({
     width: '50px',
     height: '50px'
   },
-  image: {
+  imageContainer: {
     width: '100%',
-    height: '250px'
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    justifyItems: 'center',
+    alignItems: 'center'
+  },
+  image: {
+    maxWidth: '100%',
+    height: '100%'
   },
   [theme.breakpoints.up('sm')]: {
     overlay: {
       height: '300px'
     },
-    image: {
+    container: {
       height: '300px'
     }
   },
@@ -42,7 +57,7 @@ const styles = theme => ({
     overlay: {
       height: '400px'
     },
-    image: {
+    container: {
       height: '400px'
     }
   },
@@ -50,7 +65,7 @@ const styles = theme => ({
     overlay: {
       height: '500px'
     },
-    image: {
+    container: {
       height: '500px'
     }
   }
@@ -60,10 +75,30 @@ class ImageContainer extends React.Component {
   constructor(props) {
     super(props);
 
+    this.imageContainer = React.createRef();
+
     this.state = {};
   }
 
   componentDidMount() {}
+
+  componentDidUpdate(prevProps) {
+    const {
+      classes, imageURL, imageAlt, setLoading
+    } = this.props;
+    if (imageURL !== prevProps.imageURL) {
+      const imageContainer = this.imageContainer.current;
+      imageContainer.innerHTML = '';
+      const image = new Image();
+      image.onload = () => {
+        setLoading(false);
+      };
+      image.src = imageURL;
+      image.alt = imageAlt;
+      image.className = classes.image;
+      imageContainer.appendChild(image);
+    }
+  }
 
   render() {
     const {
@@ -80,7 +115,7 @@ class ImageContainer extends React.Component {
         {imageURL === null ? (
           <img src={defaultImage} alt={imageAlt} className={`${classes.image}`} />
         ) : (
-          <img src={imageURL} alt={imageAlt} className={`${classes.image}`} />
+          <div ref={this.imageContainer} className={classes.imageContainer} />
         )}
       </div>
     );
@@ -97,7 +132,8 @@ ImageContainer.propTypes = {
   classes: PropTypes.shape().isRequired,
   imageURL: PropTypes.string,
   imageAlt: PropTypes.string,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  setLoading: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(ImageContainer);

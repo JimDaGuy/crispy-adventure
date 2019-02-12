@@ -47,11 +47,20 @@ class RatingBar extends React.Component {
     super(props);
 
     this.state = {
-      selectedValue: 1
+      selectedValue: 3
     };
+
+    this.sendRating = this.sendRating.bind(this);
   }
 
   componentDidMount() {}
+
+  sendRating = () => {
+    const { getPainting } = this.props;
+
+    // Get Painting after successfully submitting a rating
+    getPainting();
+  };
 
   handleChange = (event, value) => {
     this.setState({ selectedValue: value });
@@ -78,7 +87,12 @@ class RatingBar extends React.Component {
           />
         </Grid>
         <Grid item xs={4} sm={3} md={2} className={classes.buttonDiv}>
-          <Button variant="contained" color="secondary" className={classes.button}>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.button}
+            onClick={this.sendRating}
+          >
             Rate:
             {' '}
             {selectedValue}
@@ -97,7 +111,8 @@ RatingBar.defaultProps = {
 */
 
 RatingBar.propTypes = {
-  classes: PropTypes.shape().isRequired
+  classes: PropTypes.shape().isRequired,
+  getPainting: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(RatingBar);

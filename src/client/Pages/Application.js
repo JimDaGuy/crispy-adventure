@@ -31,11 +31,32 @@ class Application extends React.Component {
       dated: null,
       id: null,
       imageURL: null,
-      title: null
+      title: null,
+      loading: true
     };
+
+    this.getPainting = this.getPainting.bind(this);
+    this.setLoading = this.setLoading.bind(this);
   }
 
   componentDidMount() {
+    fetch('/api/checkLogin')
+      .then(res => res.json())
+      .then((response) => {
+        if (response.loggedIn) {
+          this.getPainting();
+        }
+      });
+  }
+
+  setLoading(loading) {
+    this.setState({
+      loading
+    });
+  }
+
+  getPainting() {
+    this.setLoading(true);
     fetch('/api/getRandomPainting')
       .then(res => res.json())
       .then(response => this.setState({
@@ -48,13 +69,15 @@ class Application extends React.Component {
 
   render() {
     const { classes, updateLogin, csrf } = this.props;
-    const { id, imageURL, title } = this.state;
+    const {
+      id, imageURL, title, loading
+    } = this.state;
 
     return (
       <div className={`${classes.grow} ${classes.container}`}>
         <MainAppBar updateLogin={updateLogin} />
-        <ImageContainer title={title} imageURL={imageURL} loading={false} />
-        <RatingBar id={id} csrf={csrf} />
+        <ImageContainer title={title} imageURL={imageURL} setLoading={this.setLoading} loading={loading} />
+        <RatingBar id={id} getPainting={this.getPainting} csrf={csrf} />
       </div>
     );
   }
