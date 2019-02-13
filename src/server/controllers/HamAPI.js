@@ -1,7 +1,7 @@
 // Harvard Art Museum (HAM) Api Controller
 const request = require('request');
 
-const HARVARD_KEY = process.env.HARVARD_KEY || '';
+const { HARVARD_KEY } = process.env;
 
 const getRandomPainting = (req, res) => {
   const paintingNumParams = {
