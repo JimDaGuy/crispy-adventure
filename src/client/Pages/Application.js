@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-// import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+
 import MainAppBar from '../Components/MainAppBar';
 import ImageContainer from '../Components/ImageContainer';
 import RatingBar from '../Components/RatingBar';
@@ -12,8 +17,37 @@ const styles = theme => ({
     flexGrow: 1
   },
   container: {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.common.white,
     minWidth: '300px'
+  },
+  paintingTitle: {
+    lineHeight: '1.25rem',
+    maxHeight: '3.75rem',
+    padding: '10px 0 0 10px',
+    textOverflow: 'ellipsis',
+    wordWrap: 'break-word',
+    overflow: 'hidden',
+    display: '-webkit-box',
+    '-webkit-line-clamp': '3',
+    '-webkit-box-orient': 'vertical',
+    fontWeight: 'bold'
+  },
+  options: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    justifyItems: 'center',
+    alignItems: 'center'
+  },
+  iconButton: {
+    margin: theme.spacing.unit,
+    color: theme.palette.primary.main,
+    '&:hover': {
+      color: theme.palette.primary.light
+    },
+    '&:active': {
+      color: theme.palette.primary.dark
+    }
   },
   [theme.breakpoints.up('md')]: {
     container: {}
@@ -28,7 +62,6 @@ class Application extends React.Component {
     super(props);
 
     this.state = {
-      dated: null,
       id: null,
       imageURL: null,
       title: null,
@@ -59,25 +92,55 @@ class Application extends React.Component {
     this.setLoading(true);
     fetch('/api/getRandomPainting')
       .then(res => res.json())
-      .then(response => this.setState({
-        dated: response.dated,
-        id: response.id,
-        imageURL: response.primaryimageurl,
-        title: response.title
-      }));
+      .then((response) => {
+        console.dir(response);
+        this.setState({
+          id: response.id,
+          imageURL: response.primaryimageurl,
+          title: response.title,
+          url: response.url
+        });
+      });
   }
 
   render() {
     const { classes, updateLogin, csrf } = this.props;
     const {
-      id, imageURL, title, loading
+      id, imageURL, title, loading, url
     } = this.state;
 
     return (
       <div className={`${classes.grow} ${classes.container}`}>
         <MainAppBar updateLogin={updateLogin} />
-        <ImageContainer title={title} imageURL={imageURL} setLoading={this.setLoading} loading={loading} />
+        <ImageContainer
+          imageAlt={title}
+          imageURL={imageURL}
+          setLoading={this.setLoading}
+          loading={loading}
+        />
         <RatingBar id={id} getPainting={this.getPainting} csrf={csrf} />
+        <Grid container spacing={0} className={classes.titleBar}>
+          <Grid item xs={7} sm={8} md={9} lg={10}>
+            <Typography
+              component="h2"
+              variant="subtitle1"
+              title={title}
+              className={classes.paintingTitle}
+            >
+              {title}
+            </Typography>
+          </Grid>
+          <Grid item xs={5} sm={4} md={3} lg={2} className={classes.options}>
+            <IconButton className={classes.iconButton} aria-label="Bookmark">
+              <BookmarkIcon fontSize="large" />
+            </IconButton>
+            <a href={url} rel="noopener noreferrer" target="_blank">
+              <IconButton className={classes.iconButton} aria-label="Link to Harvard Site">
+                <OpenInNewIcon fontSize="large" />
+              </IconButton>
+            </a>
+          </Grid>
+        </Grid>
       </div>
     );
   }

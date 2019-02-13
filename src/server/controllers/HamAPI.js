@@ -1,14 +1,13 @@
 // Harvard Art Museum (HAM) Api Controller
 const request = require('request');
 
-const HARVARD_KEY = process.env.HARVARD_KEY || '***REMOVED***';
+const HARVARD_KEY = process.env.HARVARD_KEY || '';
 
 const getRandomPainting = (req, res) => {
   const paintingNumParams = {
     apikey: HARVARD_KEY,
     classification: 'Paintings',
-    size: 0,
-    height: '<500'
+    size: 0
   };
 
   // Get number of paintings
@@ -24,7 +23,8 @@ const getRandomPainting = (req, res) => {
       const randomPaintParams = {
         apikey: HARVARD_KEY,
         classification: 'Paintings',
-        fields: 'id,title,dated,primaryimageurl',
+        fields:
+          'id,title,primaryimageurl,colors,dated,culture,medium,department,division,url,period,places',
         page: Math.floor(Math.random() * (paintNum + 1)),
         size: 1,
         height: '<500'

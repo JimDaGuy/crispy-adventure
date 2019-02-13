@@ -55,18 +55,18 @@ const styles = theme => ({
   },
   [theme.breakpoints.up('md')]: {
     overlay: {
-      height: '400px'
+      height: '350px'
     },
     container: {
-      height: '400px'
+      height: '350px'
     }
   },
   [theme.breakpoints.up('lg')]: {
     overlay: {
-      height: '500px'
+      height: '450px'
     },
     container: {
-      height: '500px'
+      height: '450px'
     }
   }
 });
@@ -95,6 +95,7 @@ class ImageContainer extends React.Component {
       };
       image.src = imageURL;
       image.alt = imageAlt;
+      // image.title = imageAlt;
       image.className = classes.image;
       imageContainer.appendChild(image);
     }
