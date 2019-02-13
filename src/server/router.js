@@ -6,6 +6,7 @@ const router = (app) => {
   // Temp route
   app.get('/api/getUsername', (req, res) => res.send({ username: os.userInfo().username }));
 
+  app.post('/api/sendRating', mid.requiresLogin, controllers.Painting.createRating);
   app.get('/api/getRandomPainting', mid.requiresLogin, controllers.HamAPI.getRandomPainting);
 
   // Account Routes

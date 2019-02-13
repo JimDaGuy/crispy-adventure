@@ -5,8 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
+import $ from 'jquery';
 import MainAppBar from '../Components/MainAppBar';
 import ImageContainer from '../Components/ImageContainer';
 import RatingBar from '../Components/RatingBar';
@@ -62,14 +64,19 @@ class Application extends React.Component {
     super(props);
 
     this.state = {
+      bookmarked: false,
+      currentRating: 3,
       id: null,
       imageURL: null,
       title: null,
       loading: true
     };
 
-    this.getPainting = this.getPainting.bind(this);
     this.setLoading = this.setLoading.bind(this);
+    this.getPainting = this.getPainting.bind(this);
+    this.sendRating = this.sendRating.bind(this);
+    this.bookmarkImage = this.bookmarkImage.bind(this);
+    this.updateRatingState = this.updateRatingState.bind(this);
   }
 
   componentDidMount() {
@@ -94,6 +101,7 @@ class Application extends React.Component {
       .then(res => res.json())
       .then((response) => {
         console.dir(response);
+        // Return bookmarked also and set it here
         this.setState({
           id: response.id,
           imageURL: response.primaryimageurl,
@@ -103,10 +111,51 @@ class Application extends React.Component {
       });
   }
 
+  sendRating() {
+    const { currentRating, id } = this.state;
+    const { csrf } = this.props;
+
+    $.ajax({
+      cache: false,
+      type: 'POST',
+      url: '/api/sendRating',
+      data: {
+        rating: currentRating,
+        imageID: id,
+        _csrf: csrf
+      },
+      dataType: 'json',
+      success: () => {
+        this.getPainting();
+      },
+      error: (error) => {
+        if (error) {
+          const errorMessage = error.responseJSON.error;
+          console.dir(errorMessage);
+        }
+      }
+    });
+    return false;
+  }
+
+  bookmarkImage() {
+    const { bookmarked } = this.state;
+    this.setState({
+      bookmarked: !bookmarked
+    });
+    console.dir(bookmarked);
+  }
+
+  updateRatingState(rating) {
+    this.setState({
+      currentRating: rating
+    });
+  }
+
   render() {
     const { classes, updateLogin, csrf } = this.props;
     const {
-      id, imageURL, title, loading, url
+      id, imageURL, title, loading, url, bookmarked
     } = this.state;
 
     return (
@@ -118,7 +167,7 @@ class Application extends React.Component {
           setLoading={this.setLoading}
           loading={loading}
         />
-        <RatingBar id={id} getPainting={this.getPainting} csrf={csrf} />
+        <RatingBar id={id} sendRating={this.sendRating} updateRatingState={this.updateRatingState} csrf={csrf} />
         <Grid container spacing={0} className={classes.titleBar}>
           <Grid item xs={7} sm={8} md={9} lg={10}>
             <Typography
@@ -131,10 +180,19 @@ class Application extends React.Component {
             </Typography>
           </Grid>
           <Grid item xs={5} sm={4} md={3} lg={2} className={classes.options}>
-            <IconButton className={classes.iconButton} aria-label="Bookmark">
-              <BookmarkIcon fontSize="large" />
+            <IconButton
+              className={classes.iconButton}
+              aria-label="Bookmark Image"
+              onClick={this.bookmarkImage}
+              title="Bookmark Image"
+            >
+              {bookmarked ? (
+                <BookmarkIcon fontSize="large" />
+              ) : (
+                <BookmarkBorderIcon fontSize="large" />
+              )}
             </IconButton>
-            <a href={url} rel="noopener noreferrer" target="_blank">
+            <a href={url} rel="noopener noreferrer" target="_blank" title="Harvard Site">
               <IconButton className={classes.iconButton} aria-label="Link to Harvard Site">
                 <OpenInNewIcon fontSize="large" />
               </IconButton>
