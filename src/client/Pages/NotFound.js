@@ -12,10 +12,10 @@ const styles = theme => ({
     flexGrow: 1
   },
   container: {
-    backgroundColor: theme.palette.primary.light
+    backgroundColor: theme.palette.common.white
   },
   bannerContainer: {
-    backgroundColor: theme.palette.grey['100'],
+    backgroundColor: theme.palette.common.white,
     height: '90vh',
     padding: '20px 0'
   },
@@ -26,16 +26,16 @@ const styles = theme => ({
   },
   h1: {
     margin: '20px 0',
-    color: theme.palette.secondary.contrastText
+    color: theme.palette.common.black
   },
   description: {
-    color: theme.palette.secondary.contrastText
+    color: theme.palette.common.black
   },
   link: {
-    color: theme.palette.secondary.light
+    color: theme.palette.secondary.main
   },
   return: {
-    color: theme.palette.secondary.light,
+    color: theme.palette.secondary.main,
     textDecoration: 'none'
   }
 });
@@ -55,7 +55,7 @@ class NotFound extends React.Component {
     return (
       <div className={`${classes.grow} ${classes.container}`}>
         <LandingAppBar signupButton={false} loginButton={false} />
-        <Grid container spacing={0} color="inherit" className={classes.bannerContainer}>
+        <Grid container spacing={0} className={classes.bannerContainer}>
           <Grid item xs={12}>
             <div className={classes.bannerTextContainer}>
               <Typography
