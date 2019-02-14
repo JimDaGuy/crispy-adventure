@@ -5,8 +5,7 @@ This web application is currently in development and does not have a live demo y
 ## Tech Stack
 
 - HTML
-- CSS/SASS
-- CSS Modules
+- CSS in JS (Material UI withStyles)
 - Javascript (ES6)
 - Webpack w/ Hot Module Reloading
 - React

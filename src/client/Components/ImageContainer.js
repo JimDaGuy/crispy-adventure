@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import defaultImage from '../Assets/profile.png';
-// import style from './ImageContainer.module.scss';
 
 const styles = theme => ({
   container: {

@@ -10,7 +10,6 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import $ from 'jquery';
 import LandingAppBar from '../Components/LandingAppBar';
-// import style from './Landing.module.scss';
 
 const styles = theme => ({
   grow: {
@@ -42,7 +41,7 @@ const styles = theme => ({
     padding: '20px',
     borderRadius: '15px',
     margin: '0 auto',
-    backgroundColor: theme.palette.common.white,
+    backgroundColor: theme.palette.common.white
   },
   error: {
     marginTop: '10px',
@@ -101,11 +100,7 @@ class Landing extends React.Component {
         <Grid container spacing={0} className={classes.bannerContainer}>
           <Grid item xs={12} sm={7}>
             <div className={classes.bannerTextContainer}>
-              <Typography
-                component="h1"
-                variant="h4"
-                className={`${classes.grow} ${classes.h1}`}
-              >
+              <Typography component="h1" variant="h4" className={`${classes.grow} ${classes.h1}`}>
                 Rate Paintings
               </Typography>
               <hr />

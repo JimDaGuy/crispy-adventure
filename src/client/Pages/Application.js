@@ -12,7 +12,6 @@ import $ from 'jquery';
 import MainAppBar from '../Components/MainAppBar';
 import ImageContainer from '../Components/ImageContainer';
 import RatingBar from '../Components/RatingBar';
-// import style from './Application.module.scss';
 
 const styles = theme => ({
   grow: {

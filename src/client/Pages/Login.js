@@ -10,7 +10,6 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import $ from 'jquery';
 import LandingAppBar from '../Components/LandingAppBar';
-// import style from './Landing.module.scss';
 
 const styles = theme => ({
   grow: {
