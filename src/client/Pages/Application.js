@@ -76,6 +76,7 @@ class Application extends React.Component {
     this.getPainting = this.getPainting.bind(this);
     this.sendRating = this.sendRating.bind(this);
     this.bookmarkImage = this.bookmarkImage.bind(this);
+    this.updateBookmarkStatus = this.updateBookmarkStatus.bind(this);
     this.updateRatingState = this.updateRatingState.bind(this);
   }
 
@@ -108,6 +109,7 @@ class Application extends React.Component {
           title: response.title,
           url: response.url
         });
+        this.updateBookmarkStatus(response.id);
       });
   }
 
@@ -118,7 +120,7 @@ class Application extends React.Component {
     $.ajax({
       cache: false,
       type: 'POST',
-      url: '/api/sendRating',
+      url: '/api/setRating',
       data: {
         rating: currentRating,
         imageID: id,
@@ -139,11 +141,39 @@ class Application extends React.Component {
   }
 
   bookmarkImage() {
-    const { bookmarked } = this.state;
-    this.setState({
-      bookmarked: !bookmarked
+    const { id } = this.state;
+    const { csrf } = this.props;
+
+    $.ajax({
+      cache: false,
+      type: 'POST',
+      url: '/api/setBookmark',
+      data: {
+        imageID: id,
+        _csrf: csrf
+      },
+      dataType: 'json',
+      success: () => {
+        this.updateBookmarkStatus(id);
+      },
+      error: (error) => {
+        if (error) {
+          const errorMessage = error.responseJSON.error;
+          console.dir(errorMessage);
+        }
+        this.updateBookmarkStatus(id);
+      }
     });
-    console.dir(bookmarked);
+  }
+
+  updateBookmarkStatus(imageID) {
+    fetch(`/api/checkBookmark?imageID=${imageID}`)
+      .then(res => res.json())
+      .then((response) => {
+        this.setState({
+          bookmarked: response.bookmarkStatus
+        });
+      });
   }
 
   updateRatingState(rating) {
@@ -167,7 +197,12 @@ class Application extends React.Component {
           setLoading={this.setLoading}
           loading={loading}
         />
-        <RatingBar id={id} sendRating={this.sendRating} updateRatingState={this.updateRatingState} csrf={csrf} />
+        <RatingBar
+          id={id}
+          sendRating={this.sendRating}
+          updateRatingState={this.updateRatingState}
+          csrf={csrf}
+        />
         <Grid container spacing={0} className={classes.titleBar}>
           <Grid item xs={7} sm={8} md={9} lg={10}>
             <Typography

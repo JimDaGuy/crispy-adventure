@@ -1,12 +1,15 @@
-const os = require('os');
 const controllers = require('./controllers');
 const mid = require('./middleware');
 
 const router = (app) => {
-  // Temp route
-  app.get('/api/getUsername', (req, res) => res.send({ username: os.userInfo().username }));
+  // Set/Update Ratings
+  app.post('/api/setRating', mid.requiresLogin, controllers.Painting.setRating);
 
-  app.post('/api/sendRating', mid.requiresLogin, controllers.Painting.createRating);
+  // Set/Remove/Check Bookmarks
+  app.get('/api/checkBookmark', mid.requiresLogin, controllers.Painting.checkBookmark);
+  app.post('/api/setBookmark', mid.requiresLogin, controllers.Painting.setBookmark);
+
+  // Get Paintings from HAM API
   app.get('/api/getRandomPainting', mid.requiresLogin, controllers.HamAPI.getRandomPainting);
 
   // Account Routes
