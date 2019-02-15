@@ -49,6 +49,11 @@ const styles = theme => ({
       color: theme.palette.primary.dark
     }
   },
+  [theme.breakpoints.down('xs')]: {
+    icon: {
+      fontSize: '25px'
+    }
+  },
   [theme.breakpoints.up('md')]: {
     container: {}
   },
@@ -99,7 +104,7 @@ class Application extends React.Component {
     fetch('/api/getRandomPainting')
       .then(res => res.json())
       .then((response) => {
-        console.dir(response);
+        // console.dir(response);
         // Return bookmarked also and set it here
         this.setState({
           id: response.id,
@@ -141,8 +146,12 @@ class Application extends React.Component {
   }
 
   bookmarkImage() {
-    const { id } = this.state;
+    const { id, bookmarked } = this.state;
     const { csrf } = this.props;
+
+    this.setState({
+      bookmarked: !bookmarked
+    });
 
     fetch('/api/setBookmark', {
       method: 'POST',
@@ -223,14 +232,14 @@ class Application extends React.Component {
               title="Bookmark Image"
             >
               {bookmarked ? (
-                <BookmarkIcon fontSize="large" />
+                <BookmarkIcon className={classes.icon} fontSize="large" />
               ) : (
-                <BookmarkBorderIcon fontSize="large" />
+                <BookmarkBorderIcon className={classes.icon} fontSize="large" />
               )}
             </IconButton>
             <a href={url} rel="noopener noreferrer" target="_blank" title="Harvard Site">
               <IconButton className={classes.iconButton} aria-label="Link to Harvard Site">
-                <OpenInNewIcon fontSize="large" />
+                <OpenInNewIcon className={classes.icon} fontSize="large" />
               </IconButton>
             </a>
           </Grid>

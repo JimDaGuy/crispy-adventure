@@ -82,8 +82,8 @@ class Landing extends React.Component {
         updateLogin(true, response.redirect);
       },
       error: (error) => {
-        console.dir(error);
         const errorMessage = error.responseJSON.error;
+        console.dir(errorMessage);
         this.setState({ error: errorMessage });
       }
     });

@@ -19,6 +19,9 @@ const styles = theme => ({
     padding: '0 25px',
     overflow: 'hidden'
   },
+  sliderContainer: {
+    touchAction: 'none'
+  },
   ratingLabel: {
     margin: '5px 0 20px 0',
     fontSize: '.9em'
@@ -35,7 +38,9 @@ const styles = theme => ({
     marginLeft: 5,
     marginRight: 5
   },
-  slider: {},
+  slider: {
+    touchAction: 'none'
+  },
   [theme.breakpoints.up('sm')]: {},
   [theme.breakpoints.up('md')]: {},
   [theme.breakpoints.up('lg')]: {}
