@@ -8,7 +8,6 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
-import $ from 'jquery';
 import MainAppBar from '../Components/MainAppBar';
 import ImageContainer from '../Components/ImageContainer';
 import RatingBar from '../Components/RatingBar';
@@ -116,26 +115,28 @@ class Application extends React.Component {
     const { currentRating, id } = this.state;
     const { csrf } = this.props;
 
-    $.ajax({
-      cache: false,
-      type: 'POST',
-      url: '/api/setRating',
-      data: {
+    fetch('/api/setRating', {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
         rating: currentRating,
         imageID: id,
         _csrf: csrf
-      },
-      dataType: 'json',
-      success: () => {
+      })
+    })
+      .then(() => {
         this.getPainting();
-      },
-      error: (error) => {
+      })
+      .catch((error) => {
         if (error) {
           const errorMessage = error.responseJSON.error;
           console.dir(errorMessage);
         }
-      }
-    });
+      });
+
     return false;
   }
 
@@ -143,26 +144,27 @@ class Application extends React.Component {
     const { id } = this.state;
     const { csrf } = this.props;
 
-    $.ajax({
-      cache: false,
-      type: 'POST',
-      url: '/api/setBookmark',
-      data: {
+    fetch('/api/setBookmark', {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
         imageID: id,
         _csrf: csrf
-      },
-      dataType: 'json',
-      success: () => {
+      })
+    })
+      .then(() => {
         this.updateBookmarkStatus(id);
-      },
-      error: (error) => {
+      })
+      .catch((error) => {
         if (error) {
           const errorMessage = error.responseJSON.error;
           console.dir(errorMessage);
         }
         this.updateBookmarkStatus(id);
-      }
-    });
+      });
   }
 
   updateBookmarkStatus(imageID) {

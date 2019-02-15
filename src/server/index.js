@@ -42,6 +42,7 @@ const app = express();
 app.disable('x-powered-by');
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(
   session({
     key: 'sessionid',

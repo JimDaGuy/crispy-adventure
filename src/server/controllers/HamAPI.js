@@ -13,10 +13,11 @@ const getRandomPainting = (req, res) => {
   // Get number of paintings
   request(
     { url: 'https://api.harvardartmuseums.org/object', qs: paintingNumParams },
+    // eslint-disable-next-line consistent-return
     (err, response, body) => {
-      if (err) {
-        throw err;
-      }
+      if (err) return res.status(500).json({ error: 'Error retrieving info from HAM API' });
+      if (body === 'Unauthorized') return res.status(500).json({ error: 'Missing HAM API Key' });
+
       const parsedBody = JSON.parse(body);
       const paintNum = parsedBody.info.totalrecords;
 
@@ -32,10 +33,10 @@ const getRandomPainting = (req, res) => {
 
       request(
         { url: 'https://api.harvardartmuseums.org/object', qs: randomPaintParams },
+        // eslint-disable-next-line consistent-return
         (err2, response2, body2) => {
-          if (err2) {
-            throw err2;
-          }
+          if (err2) return res.status(500).json({ error: 'Error retrieving info from HAM API' });
+          if (body2 === 'Unauthorized') return res.status(500).json({ error: 'Missing HAM API Key' });
 
           const parsedBody2 = JSON.parse(body2);
           let randomPainting = parsedBody2.records[0];
