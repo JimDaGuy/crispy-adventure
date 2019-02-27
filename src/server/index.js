@@ -70,8 +70,8 @@ app.use((err, req, res, next) => {
 });
 
 router(app);
-app.use(express.static(path.join(__dirname, '/../../dist')));
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, '/../../dist/index.html')));
+app.use(express.static(path.join(__dirname, '/../../public')));
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, '/../../public/index.html')));
 
 app.listen(port, (err) => {
   if (err) throw err;
