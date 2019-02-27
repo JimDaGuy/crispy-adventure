@@ -5,9 +5,11 @@ import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
 
-const styles = () => ({
+const styles = theme => ({
   root: {
     flexGrow: 1
   },
@@ -16,6 +18,16 @@ const styles = () => ({
   },
   appName: {
     textDecoration: 'none'
+  },
+  profileButton: {
+    margin: theme.spacing.unit,
+    color: theme.palette.common.white,
+    '&:hover': {
+      color: theme.palette.common.black
+    },
+    '&:active': {
+      color: theme.palette.common.white
+    }
   }
 });
 
@@ -41,7 +53,7 @@ class MainAppBar extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, loggedIn, username } = this.props;
 
     return (
       <div className={classes.root}>
@@ -56,6 +68,13 @@ class MainAppBar extends React.Component {
             >
               PaintGauge
             </Typography>
+            {loggedIn && username ? (
+              <a href={`/#/profile/${username}`}>
+                <IconButton className={classes.profileButton} aria-label="Go to Profile">
+                  <AccountCircleIcon className={classes.icon} fontSize="large" />
+                </IconButton>
+              </a>
+            ) : null}
             <Button
               variant="outlined"
               color="inherit"
@@ -71,9 +90,16 @@ class MainAppBar extends React.Component {
   }
 }
 
+MainAppBar.defaultProps = {
+  loggedIn: false,
+  username: ''
+};
+
 MainAppBar.propTypes = {
   classes: PropTypes.shape().isRequired,
-  updateLogin: PropTypes.func.isRequired
+  updateLogin: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool,
+  username: PropTypes.string
 };
 
 export default withStyles(styles)(MainAppBar);

@@ -193,14 +193,16 @@ class Application extends React.Component {
   }
 
   render() {
-    const { classes, updateLogin, csrf } = this.props;
+    const {
+      classes, updateLogin, csrf, username
+    } = this.props;
     const {
       id, imageURL, title, loading, url, bookmarked
     } = this.state;
 
     return (
       <div className={`${classes.grow} ${classes.container}`}>
-        <MainAppBar updateLogin={updateLogin} />
+        <MainAppBar loggedIn username={username} updateLogin={updateLogin} />
         <ImageContainer
           imageAlt={title}
           imageURL={imageURL}
@@ -256,7 +258,8 @@ Application.defaultProps = {
 Application.propTypes = {
   classes: PropTypes.shape().isRequired,
   csrf: PropTypes.string,
-  updateLogin: PropTypes.func.isRequired
+  updateLogin: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(Application);

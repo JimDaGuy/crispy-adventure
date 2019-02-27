@@ -13,7 +13,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { csrf: null, loggedIn: false };
+    this.state = { csrf: null, loggedIn: false, username: '' };
 
     this.updateLogin = this.updateLogin.bind(this);
   }
@@ -21,11 +21,23 @@ class App extends React.Component {
   componentDidMount() {
     fetch('/api/checkLogin')
       .then(res => res.json())
-      .then(response => this.setState({ loggedIn: response.loggedIn }));
+      .then(response => this.setState({
+        loggedIn: response.loggedIn,
+        username: response.username
+      }));
 
     fetch('/api/getToken')
       .then(res => res.json())
       .then(response => this.setState({ csrf: response.csrfToken }));
+  }
+
+  componentDidUpdate() {
+    fetch('/api/checkLogin')
+      .then(res => res.json())
+      .then(response => this.setState({
+        loggedIn: response.loggedIn,
+        username: response.username
+      }));
   }
 
   updateLogin(status, redirect) {
@@ -38,21 +50,33 @@ class App extends React.Component {
   }
 
   render() {
-    const { csrf, loggedIn } = this.state;
+    const { csrf, loggedIn, username } = this.state;
 
     return (
       <Router>
         <Switch>
           <Route
             path="/profile/:username"
-            render={props => <Profile {...props} loggedIn={loggedIn} updateLogin={this.updateLogin} />}
+            render={props => (
+              <Profile
+                {...props}
+                loggedIn={loggedIn}
+                username={username}
+                updateLogin={this.updateLogin}
+              />
+            )}
           />
           <Route
             path="/app"
             render={props => (!loggedIn ? (
               <Redirect to="/" />
             ) : (
-              <Application {...props} csrf={csrf} updateLogin={this.updateLogin} />
+              <Application
+                {...props}
+                csrf={csrf}
+                username={username}
+                updateLogin={this.updateLogin}
+              />
             ))
             }
           />
