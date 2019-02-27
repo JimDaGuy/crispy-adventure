@@ -99,7 +99,7 @@ class Profile extends React.Component {
         });
         this.loadProfileInfo(response.username);
       })
-      .catch((error) => {
+      .catch(() => {
         this.setState({
           user: username,
           userFound: false
@@ -108,10 +108,10 @@ class Profile extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { match } = this.props;
+    const { match, location } = this.props;
     const { username } = match.params;
 
-    if (this.props.location !== prevProps.location) {
+    if (location !== prevProps.location) {
       fetch(`/api/checkUser?username=${username}`)
         .then(res => res.json())
         .then((response) => {
@@ -122,6 +122,7 @@ class Profile extends React.Component {
             });
             return;
           }
+          console.dir(response);
 
           this.setState({
             user: response.username,
@@ -129,7 +130,7 @@ class Profile extends React.Component {
           });
           this.loadProfileInfo(response.username);
         })
-        .catch((error) => {
+        .catch(() => {
           this.setState({
             user: username,
             userFound: false
@@ -139,8 +140,33 @@ class Profile extends React.Component {
   }
 
   loadProfileInfo(username) {
-    console.dir(username);
-    this.setState({});
+    const { user } = this.state;
+    fetch(`/api/getBookmarksCount?username=${username}`)
+      .then(res => res.json())
+      .then((response) => {
+        if (response.error) {
+          console.dir(response.error);
+          return;
+        }
+        console.dir(response);
+      })
+      .catch((error) => {
+        console.dir(error);
+      });
+
+    console.dir(user);
+    fetch(`/api/getBookmarks?username=${username}&rpp=${6}&page=${1}`)
+      .then(res => res.json())
+      .then((response) => {
+        if (response.error) {
+          console.dir(response.error);
+          return;
+        }
+        console.dir(response);
+      })
+      .catch((error) => {
+        console.dir(error);
+      });
   }
 
   render() {
@@ -196,7 +222,8 @@ Profile.propTypes = {
   classes: PropTypes.shape().isRequired,
   updateLogin: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
-  match: PropTypes.shape().isRequired
+  match: PropTypes.shape().isRequired,
+  location: PropTypes.shape().isRequired
 };
 
 export default withStyles(styles)(Profile);

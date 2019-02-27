@@ -5,8 +5,10 @@ const router = (app) => {
   // Set/Update Ratings
   app.post('/api/setRating', mid.requiresLogin, controllers.Painting.setRating);
 
-  // Set/Remove/Check Bookmarks
+  // Bookmarks
   app.get('/api/checkBookmark', mid.requiresLogin, controllers.Painting.checkBookmark);
+  app.get('/api/getBookmarks', mid.requiresLogin, controllers.Painting.getBookmarks);
+  app.get('/api/getBookmarksCount', mid.requiresLogin, controllers.Painting.getBookmarksCount);
   app.post('/api/setBookmark', mid.requiresLogin, controllers.Painting.setBookmark);
 
   // Get Paintings from HAM API

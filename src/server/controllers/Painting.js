@@ -1,6 +1,6 @@
 const models = require('../models');
 
-const { Rating, Bookmark } = models;
+const { Account, Rating, Bookmark } = models;
 
 // eslint-disable-next-line consistent-return
 const setRating = (req, res) => {
@@ -91,8 +91,64 @@ const checkBookmark = (req, res) => {
   });
 };
 
+// eslint-disable-next-line consistent-return
+const getBookmarks = (req, res) => {
+  if (!req.query.username || !req.query.rpp || !req.query.page) {
+    return res.status(400).json({ error: 'username, rpp, and page parameters are required' });
+  }
+
+  const { username, rpp, page } = req.query;
+
+  // eslint-disable-next-line consistent-return
+  Account.AccountModel.findByUsername(username, (err, account) => {
+    if (err) {
+      return res.status(400).json({ error: 'Error searching for account' });
+    }
+
+    if (!account) {
+      return res.status(400).json({ error: 'Account not found' });
+    }
+
+    // eslint-disable-next-line no-underscore-dangle
+    Bookmark.BookmarkModel.getBookmarks(account, rpp, page, (err2, results) => {
+      if (err2) return res.status(400).json({ error: 'Error getting bookmarks' });
+
+      return res.status(200).json(results);
+    });
+  });
+};
+
+// eslint-disable-next-line consistent-return
+const getBookmarksCount = (req, res) => {
+  if (!req.query.username) {
+    return res.status(400).json({ error: 'username parameter is required' });
+  }
+
+  const { username } = req.query;
+
+  // eslint-disable-next-line consistent-return
+  Account.AccountModel.findByUsername(username, (err, account) => {
+    if (err) {
+      return res.status(400).json({ error: 'Error searching for account' });
+    }
+
+    if (!account) {
+      return res.status(400).json({ error: 'Account not found' });
+    }
+
+    // eslint-disable-next-line no-underscore-dangle
+    Bookmark.BookmarkModel.getBookmarksCount(account, (err2, results) => {
+      if (err2) return res.status(400).json({ error: 'Error getting count of bookmarks' });
+
+      return res.status(200).json({ count: results });
+    });
+  });
+};
+
 module.exports = {
   setRating,
   setBookmark,
-  checkBookmark
+  checkBookmark,
+  getBookmarks,
+  getBookmarksCount
 };

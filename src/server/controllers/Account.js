@@ -28,6 +28,7 @@ const checkUser = (request, response) => {
       return res.status(400).json({ error: 'Account not found' });
     }
 
+    // eslint-disable-next-line no-underscore-dangle
     return res.status(200).json({ username: account.username });
   });
 };

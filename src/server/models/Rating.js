@@ -44,14 +44,15 @@ RatingSchema.statics.updateRating = (account, imageID, rating, callback) => {
 };
 
 // getRatings:
-// - Get a user's ratings
+// - Get a user's ratings - 1-indexed pages
 // //////////////////////////////
-RatingSchema.statics.getRatings = (account, limit, callback) => {
+RatingSchema.statics.getRatings = (account, rpp, page, callback) => {
   const searchParams = { userID: account._id }; // eslint-disable-line no-underscore-dangle
 
   return RatingModel.find(searchParams)
     .sort({ timestamp: 'desc' })
-    .limit(limit)
+    .skip(rpp * (page - 1))
+    .limit(rpp)
     .exec(callback);
 };
 
