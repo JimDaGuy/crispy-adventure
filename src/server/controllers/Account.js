@@ -4,8 +4,32 @@ const { Account } = models;
 
 const checkLogin = (req, res) => {
   const loggedIn = req.session.account !== undefined;
+  if (loggedIn) {
+    const { username } = req.session.account;
+    res.json({ loggedIn, username });
+    return;
+  }
 
   res.json({ loggedIn });
+};
+
+const checkUser = (request, response) => {
+  const req = request;
+  const res = response;
+
+  const username = `${req.query.username}`;
+
+  return Account.AccountModel.findByUsername(username, (err, account) => {
+    if (err) {
+      return res.status(400).json({ error: 'Error searching for account' });
+    }
+
+    if (!account) {
+      return res.status(400).json({ error: 'Account not found' });
+    }
+
+    return res.status(200).json({ username: account.username });
+  });
 };
 
 const logout = (req, res) => {
@@ -123,6 +147,7 @@ const changePassword = (request, response) => {
 
 module.exports = {
   checkLogin,
+  checkUser,
   login,
   logout,
   signup,

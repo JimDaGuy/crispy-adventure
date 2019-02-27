@@ -6,6 +6,7 @@ import Landing from './Pages/Landing';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import Application from './Pages/Application';
+import Profile from './Pages/Profile';
 import NotFound from './Pages/NotFound';
 
 class App extends React.Component {
@@ -43,17 +44,15 @@ class App extends React.Component {
       <Router>
         <Switch>
           <Route
-            path="/"
-            exact
-            render={props => (loggedIn ? (
-              <Redirect to="/app" />
+            path="/profile/:username"
+            render={props => <Profile {...props} loggedIn={loggedIn} updateLogin={this.updateLogin} />}
+          />
+          <Route
+            path="/app"
+            render={props => (!loggedIn ? (
+              <Redirect to="/" />
             ) : (
-              <Landing
-                {...props}
-                csrf={csrf}
-                loggedIn={loggedIn}
-                updateLogin={this.updateLogin}
-              />
+              <Application {...props} csrf={csrf} updateLogin={this.updateLogin} />
             ))
             }
           />
@@ -76,11 +75,17 @@ class App extends React.Component {
             }
           />
           <Route
-            path="/app"
-            render={props => (!loggedIn ? (
-              <Redirect to="/" />
+            path="/"
+            exact
+            render={props => (loggedIn ? (
+              <Redirect to="/app" />
             ) : (
-              <Application {...props} csrf={csrf} updateLogin={this.updateLogin} />
+              <Landing
+                {...props}
+                csrf={csrf}
+                loggedIn={loggedIn}
+                updateLogin={this.updateLogin}
+              />
             ))
             }
           />

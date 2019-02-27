@@ -23,6 +23,7 @@ const router = (app) => {
     controllers.Account.changePassword
   );
 
+  app.get('/api/checkUser', controllers.Account.checkUser);
   app.get('/api/checkLogin', controllers.Account.checkLogin);
 
   // Security
