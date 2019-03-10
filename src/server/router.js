@@ -12,6 +12,7 @@ const router = (app) => {
   app.post('/api/setBookmark', mid.requiresLogin, controllers.Painting.setBookmark);
 
   // Get Paintings from HAM API
+  app.get('/api/getPainting', mid.requiresLogin, controllers.HamAPI.getPainting);
   app.get('/api/getRandomPainting', mid.requiresLogin, controllers.HamAPI.getRandomPainting);
 
   // Account Routes

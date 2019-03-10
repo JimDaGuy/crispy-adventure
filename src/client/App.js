@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   HashRouter as Router, Route, Redirect, Switch
 } from 'react-router-dom';
@@ -21,30 +22,36 @@ class App extends React.Component {
   componentDidMount() {
     fetch('/api/checkLogin')
       .then(res => res.json())
-      .then(response => this.setState({
-        loggedIn: response.loggedIn,
-        username: response.username
-      }));
+      .then((response) => {
+        this.setState({
+          loggedIn: response.loggedIn,
+          username: response.username
+        });
+      });
 
     fetch('/api/getToken')
       .then(res => res.json())
       .then(response => this.setState({ csrf: response.csrfToken }));
   }
 
-  componentDidUpdate() {
-    fetch('/api/checkLogin')
-      .then(res => res.json())
-      .then(response => this.setState({
-        loggedIn: response.loggedIn,
-        username: response.username
-      }));
+  componentDidUpdate(prevProps) {
+    const { location } = this.props;
+
+    if (location !== prevProps.location) {
+      fetch('/api/checkLogin')
+        .then(res => res.json())
+        .then(response => this.setState({
+          loggedIn: response.loggedIn,
+          username: response.username
+        }));
+    }
   }
 
-  updateLogin(status, redirect) {
+  updateLogin(status, redirect, username) {
     fetch('/api/getToken')
       .then(res => res.json())
       .then((response) => {
-        this.setState({ csrf: response.csrfToken, loggedIn: status });
+        this.setState({ csrf: response.csrfToken, loggedIn: status, username });
         window.location = redirect;
       });
   }
@@ -119,5 +126,13 @@ class App extends React.Component {
     );
   }
 }
+
+App.defaultProps = {
+  location: {}
+};
+
+App.propTypes = {
+  location: PropTypes.shape()
+};
 
 export default App;

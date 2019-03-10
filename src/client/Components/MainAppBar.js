@@ -46,7 +46,7 @@ class MainAppBar extends React.Component {
     fetch('/api/logout').then(() => {
       const { updateLogin } = this.props;
 
-      updateLogin(false, '/#/');
+      updateLogin(false, '/#/', '');
     });
 
     return false;

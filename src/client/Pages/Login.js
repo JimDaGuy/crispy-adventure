@@ -77,7 +77,7 @@ class Login extends React.Component {
       data,
       dataType: 'json',
       success: (response) => {
-        updateLogin(true, response.redirect);
+        updateLogin(true, response.redirect, response.username);
       },
       error: (error) => {
         if (error) {

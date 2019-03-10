@@ -53,6 +53,47 @@ const getRandomPainting = (req, res) => {
   );
 };
 
+// eslint-disable-next-line consistent-return
+const getPainting = (req, res) => {
+  if (!req.query.paintingID) {
+    return res.status(400).json({ error: 'paintingID parameter is required' });
+  }
+
+  const paintingParams = {
+    apikey: HARVARD_KEY
+  };
+
+  request(
+    { url: `https://api.harvardartmuseums.org/object/${req.query.paintingID}`, qs: paintingParams },
+    // eslint-disable-next-line consistent-return
+    (err, response, body) => {
+      if (err) return res.status(500).json({ error: 'Error retrieving info from HAM API' });
+      if (body === 'Unauthorized') return res.status(500).json({ error: 'Missing HAM API Key' });
+
+      const painting = JSON.parse(body);
+
+      let paintingResponse = {
+        title: painting.title,
+        primaryimageurl: painting.primaryimageurl,
+        colors: painting.colors,
+        dated: painting.dated,
+        culture: painting.culture,
+        medium: painting.medium,
+        department: painting.department,
+        division: painting.division,
+        url: painting.url,
+        period: painting.period,
+        places: painting.places
+      };
+
+      paintingResponse = JSON.stringify(paintingResponse);
+
+      res.status(200).send(paintingResponse);
+    }
+  );
+};
+
 module.exports = {
-  getRandomPainting
+  getRandomPainting,
+  getPainting
 };

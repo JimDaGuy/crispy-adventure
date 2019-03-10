@@ -79,24 +79,32 @@ class ImageContainer extends React.Component {
     this.state = {};
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { setLoading } = this.props;
+    setLoading(true);
+  }
 
   componentDidUpdate(prevProps) {
     const {
       classes, imageURL, imageAlt, setLoading
     } = this.props;
     if (imageURL !== prevProps.imageURL) {
-      const imageContainer = this.imageContainer.current;
-      imageContainer.innerHTML = '';
-      const image = new Image();
-      image.onload = () => {
-        setLoading(false);
-      };
-      image.src = imageURL;
-      image.alt = imageAlt;
-      // image.title = imageAlt;
-      image.className = classes.image;
-      imageContainer.appendChild(image);
+      if (imageURL !== null) {
+        const imageContainer = this.imageContainer.current;
+        imageContainer.innerHTML = '';
+        const image = new Image();
+        image.onload = () => {
+          setLoading(false);
+        };
+        image.src = imageURL;
+        image.alt = imageAlt;
+        // image.title = imageAlt;
+        image.className = classes.image;
+        imageContainer.appendChild(image);
+      } else {
+        const imageContainer = this.imageContainer.current;
+        imageContainer.innerHTML = '';
+      }
     }
   }
 
@@ -107,16 +115,20 @@ class ImageContainer extends React.Component {
 
     return (
       <div className={`${classes.container}`}>
-        {loading === true ? (
+        {loading === true || imageURL === null ? (
           <div className={`${classes.overlay}`}>
-            <CircularProgress className={classes.progress} color="secondary" />
+            {loading === true ? (
+              <CircularProgress className={classes.progress} color="secondary" />
+            ) : null}
           </div>
         ) : null}
         {imageURL === null ? (
           <img src={defaultImage} alt={imageAlt} className={`${classes.image}`} />
-        ) : (
-          <div ref={this.imageContainer} className={classes.imageContainer} />
-        )}
+        ) : null}
+        <div
+          ref={this.imageContainer}
+          className={imageURL !== null ? classes.imageContainer : null}
+        />
       </div>
     );
   }
