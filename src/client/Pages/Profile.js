@@ -72,7 +72,7 @@ class Profile extends React.Component {
     super(props);
 
     this.state = {
-      user: '',
+      // user: '',
       userFound: false,
       title1: null,
       title2: null,
@@ -113,14 +113,14 @@ class Profile extends React.Component {
       .then((response) => {
         if (response.error) {
           this.setState({
-            user: username,
+            // user: username,
             userFound: false
           });
           return;
         }
 
         this.setState({
-          user: response.username,
+          // user: response.username,
           userFound: true
         });
         this.resetState();
@@ -128,7 +128,7 @@ class Profile extends React.Component {
       })
       .catch(() => {
         this.setState({
-          user: username,
+          // user: username,
           userFound: false
         });
       });
@@ -144,7 +144,7 @@ class Profile extends React.Component {
         .then((response) => {
           if (response.error) {
             this.setState({
-              user: username,
+              // user: username,
               userFound: false
             });
             return;
@@ -152,7 +152,7 @@ class Profile extends React.Component {
           // console.dir(response);
 
           this.setState({
-            user: response.username,
+            // user: response.username,
             userFound: true
           });
           this.resetState();
@@ -160,7 +160,7 @@ class Profile extends React.Component {
         })
         .catch(() => {
           this.setState({
-            user: username,
+            // user: username,
             userFound: false
           });
         });
@@ -227,7 +227,7 @@ class Profile extends React.Component {
   }
 
   loadProfileInfo(username) {
-    const { user } = this.state;
+    // const { user } = this.state;
     fetch(`/api/getBookmarksCount?username=${username}`)
       .then(res => res.json())
       .then((response) => {
