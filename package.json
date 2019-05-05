@@ -2,6 +2,9 @@
   "name": "paint-gauge-v2",
   "version": "1.0.0",
   "description": "MERN stack web app for rating paintings from the Harvard Art Museum",
+  "engines": {
+    "node": "10.15.0"
+  },
   "main": "src/server/index.js",
   "scripts": {
     "build": "webpack --mode production",
@@ -12,10 +15,10 @@
     "postman": "cross-env NODE_ENV=testing nodemon src/server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "check-licenses": "npx license-checker --onlyAllow \"Apache-2.0;BSD;CC0-1.0;CC-BY-3.0;CC-BY-4.0;ISC;MIT;WTFPL;UNLICENSE;Zlib;Apache License, Version 2.0;Apache*;Unlicense\" --summary",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No test specified\" && exit 0"
   },
   "author": "James DiGrazia",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "dependencies": {
     "@material-ui/core": "3.9.1",
     "@material-ui/icons": "3.0.2",
