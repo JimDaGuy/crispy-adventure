@@ -29,6 +29,7 @@ To run this application yourself, you need to get a key for the Harvard Art Muse
 .env
 ```
 HARVARD_KEY=MY_API_KEY
+REDIS_SECRET=MakeSomethingUp
 ```
 
 Once you get that all taken care of, go ahead and run `yarn install` and then `yarn dev` to start hacking along. 
@@ -46,6 +47,6 @@ After creating the Heroku deployment (I have three environments set up, but you 
 
 As for add ons go ahead and provision `mLab MongoDB` and `Redis Cloud`. They will automatically setup those environment variables for you. 
 
-Lastly add your Harvard Art Museum API Key  calling it `HARVARD_KEY` and set the `NODE_ENV` variable to `production`. 
+Lastly add your Harvard Art Museum API Key  to the environment variables, calling it `HARVARD_KEY`, make up a secret and set it as `REDIS_SECRET`, and set the `NODE_ENV` variable to `production`. 
 
 You can also integrate the application to work with CircleCI if you would like, the config files for that are already set up. 
