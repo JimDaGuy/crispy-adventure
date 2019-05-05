@@ -2,6 +2,9 @@
   "name": "paint-gauge-v2",
   "version": "1.0.0",
   "description": "MERN stack web app for rating paintings from the Harvard Art Museum",
+  "engines": {
+    "node": "10.15.0"
+  },
   "main": "src/server/index.js",
   "scripts": {
     "build": "webpack --mode production",
