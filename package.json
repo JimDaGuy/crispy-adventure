@@ -11,7 +11,7 @@
     "heroku-postbuild": "npm run build",
     "postman": "cross-env NODE_ENV=testing nodemon src/server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "check-licenses": "npx license-checker --onlyAllow \"Apache-2.0;BSD;CC0-1.0;CC-BY-3.0;CC-BY-4.0;ISC;MIT;WTFPL;UNLICENSE;Zlib;Apache License, Version 2.0\" --summary",
+    "check-licenses": "npx license-checker --onlyAllow \"Apache-2.0;BSD;CC0-1.0;CC-BY-3.0;CC-BY-4.0;ISC;MIT;WTFPL;UNLICENSE;Zlib;Apache License, Version 2.0;Apache*;Unlicense\" --summary",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "James DiGrazia",
