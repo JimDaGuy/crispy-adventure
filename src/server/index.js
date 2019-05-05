@@ -58,7 +58,7 @@ if (cluster.isMaster) {
         port: redisURL.port,
         pass: redisPass
       }),
-      secret: 'Paint Gauge Super Duper Secret',
+      secret: process.env.REDIS_SECRET || 'Paint Gauge Super Duper Secret',
       resave: true,
       saveUninitialized: true,
       cookie: {
