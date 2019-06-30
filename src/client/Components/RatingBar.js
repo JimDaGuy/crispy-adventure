@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Slider from '@material-ui/lab/Slider';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import Rating from 'react-rating';
 
 const styles = theme => ({
   grow: {
@@ -14,17 +15,19 @@ const styles = theme => ({
     height: '70px',
     backgroundColor: theme.palette.grey['100']
   },
-  sliderDiv: {
+  ratingDiv: {
     height: '70px',
-    padding: '0 25px',
+    paddingLeft: '5px',
     overflow: 'hidden'
   },
-  sliderContainer: {
-    touchAction: 'none'
-  },
   ratingLabel: {
-    margin: '5px 0 20px 0',
+    margin: '5px 0',
     fontSize: '.9em'
+  },
+  ratingComponent: {
+    '& span span span': {
+      backgroundColor: `${theme.palette.secondary.main} !important`,
+    }
   },
   buttonDiv: {
     height: '70px',
@@ -38,10 +41,14 @@ const styles = theme => ({
     marginLeft: 5,
     marginRight: 5
   },
-  slider: {
-    touchAction: 'none'
+  skipButton: {
+    display: 'none'
   },
-  [theme.breakpoints.up('sm')]: {},
+  [theme.breakpoints.up('sm')]: {
+    skipButton: {
+      display: 'block'
+    }
+  },
   [theme.breakpoints.up('md')]: {},
   [theme.breakpoints.up('lg')]: {}
 });
@@ -51,51 +58,100 @@ class RatingBar extends React.Component {
     super(props);
 
     this.state = {
-      selectedValue: 3
+      selectedValue: null,
+      snackbarVisible: false
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.handleChange = this.handleChange.bind(this);
+    this.handleRatingButton = this.handleRatingButton.bind(this);
+    this.handleSkipButton = this.handleSkipButton.bind(this);
+    this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
+  }
 
-  handleChange = (event, value) => {
+  handleChange = (value) => {
     const { updateRatingState } = this.props;
     updateRatingState(value);
     this.setState({ selectedValue: value });
   };
 
-  render() {
-    const { classes, sendRating } = this.props;
+  handleRatingButton = () => {
+    const { sendRating } = this.props;
     const { selectedValue } = this.state;
 
+    if (selectedValue !== null) {
+      sendRating();
+      this.setState({
+        selectedValue: null,
+        snackbarVisible: false
+      });
+      return;
+    }
+
+    this.setState({
+      snackbarVisible: true
+    });
+  };
+
+  handleSkipButton = () => {
+    const { getPainting } = this.props;
+
+    this.setState({
+      selectedValue: null,
+      snackbarVisible: false
+    });
+    getPainting();
+  }
+
+  handleSnackbarClose = () => {
+    this.setState({
+      snackbarVisible: false
+    });
+  }
+
+  render() {
+    const { classes } = this.props;
+    const { selectedValue, snackbarVisible } = this.state;
+
     return (
-      <Grid container spacing={0} className={`${classes.bar}`}>
-        <Grid item xs={8} sm={9} md={10} className={`${classes.sliderDiv} ${classes.grow}`}>
+      <Grid container justify="center" spacing={0} className={`${classes.bar}`}>
+        <Grid item xs={8} sm={8} md={5} className={`${classes.ratingDiv} ${classes.grow}`}>
           <Typography id="label" className={classes.ratingLabel}>
             Rate this painting!
           </Typography>
-          <Slider
-            classes={{ container: classes.sliderContainer }}
+          <Rating
+            className={`${classes.ratingComponent}`}
+            initialRating={selectedValue}
             value={selectedValue}
-            min={1}
-            max={5}
-            step={1}
-            aria-labelledby="label"
             onChange={this.handleChange}
           />
         </Grid>
-        <Grid item xs={4} sm={3} md={2} className={classes.buttonDiv}>
+        <Grid item xs={4} sm={4} md={3} className={classes.buttonDiv}>
           <Button
             variant="contained"
             color="secondary"
-            className={classes.button}
-            onClick={sendRating}
+            className={`${classes.button} ${classes.rateButton}`}
+            onClick={this.handleRatingButton}
           >
-            Rate:
-            {' '}
-            {selectedValue}
-            {''}
+            {selectedValue === null ? 'Rate!' : `Rate: ${selectedValue}`}
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={`${classes.button} ${classes.skipButton}`}
+            onClick={this.handleSkipButton}
+          >
+            Skip
           </Button>
         </Grid>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          open={snackbarVisible}
+          autoHideDuration={2000}
+          onClose={this.handleSnackbarClose}
+          message="Please select a rating."
+        />
       </Grid>
     );
   }
@@ -109,6 +165,7 @@ RatingBar.defaultProps = {
 
 RatingBar.propTypes = {
   classes: PropTypes.shape().isRequired,
+  getPainting: PropTypes.func.isRequired,
   sendRating: PropTypes.func.isRequired,
   updateRatingState: PropTypes.func.isRequired
 };

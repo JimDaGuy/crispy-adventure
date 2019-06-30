@@ -18,7 +18,7 @@ const styles = theme => ({
   },
   container: {
     backgroundColor: theme.palette.common.white,
-    minWidth: '300px'
+    minWidth: '325px'
   },
   paintingTitle: {
     lineHeight: '1.25rem',
@@ -211,6 +211,7 @@ class Application extends React.Component {
         />
         <RatingBar
           id={id}
+          getPainting={this.getPainting}
           sendRating={this.sendRating}
           updateRatingState={this.updateRatingState}
           csrf={csrf}

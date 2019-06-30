@@ -14,7 +14,7 @@ const styles = theme => ({
   },
   container: {
     backgroundColor: theme.palette.common.white,
-    minWidth: '300px'
+    minWidth: '325px'
   },
   username: {
     lineHeight: '3.75rem',
